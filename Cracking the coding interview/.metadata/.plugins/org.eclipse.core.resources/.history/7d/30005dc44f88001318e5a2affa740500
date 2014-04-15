@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+public class Tree 
+{
+	
+	public static void main(String[] args) 
+	{
+		int values[] = {20,8,22,4,12,10,14};
+//		BST bst = new BST(values);
+//		ArrayList<Node> spiral = bst.spiralorder(bst.getRoot());
+//		Iterator<Node> iter = spiral.iterator();
+//		while(iter.hasNext())
+//		{
+//			System.out.print(iter.next().getData() + " " );
+//		}
+//		System.out.println();
+//		bst.preorder(bst.getRoot());
+//		Node mirrored = bst.mirror(bst.getRoot());
+//		System.out.println("printing mirrored");
+//		bst.preorder(mirrored);
+	}
+
+}

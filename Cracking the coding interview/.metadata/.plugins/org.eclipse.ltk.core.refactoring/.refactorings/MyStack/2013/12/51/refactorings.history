@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Stack.java&apos; to &apos;Binary_search_tree/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;MyStack&apos;&#x0D;&#x0A;- Destination element: &apos;Binary_search_tree/src/(default package)&apos;&#x0D;&#x0A;- Original element: &apos;Stack.java&apos;" description="Copy compilation unit" destination="=Binary_search_tree/src&lt;" element1="/src&lt;{Stack.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1387472928643" units="1" version="1.0"/>
+</session>

@@ -1,0 +1,1 @@
+INDEX VERSION 1.126+D:\Documents\GitHub\Java_Codes\Cracking the coding interview\.metadata\.plugins\org.eclipse.jdt.core

@@ -1,0 +1,69 @@
+Problem Statement
+    	
+
+Three players are playing a game of word composition in which each player writes down a list of words. After the time expires the scores are calculated using the following rules. Each player gains 3 points for each unique word that only he has, 2 points for each word that is shared with exactly one other player, and 1 point for each word that is shared with both of the other players.
+
+You will be given String[]s listA, listB and listC - the word lists of playerA, playerB and playerC respectively. Your method should return scores of playerA, playerB and playerC in the form "scoreA/scoreB/scoreC" (quotes for clarity).
+ 
+Definition
+    	
+Class:	WordCompositionGame
+Method:	score
+Parameters:	String[], String[], String[]
+Returns:	String
+Method signature:	String score(String[] listA, String[] listB, String[] listC)
+(be sure your method is public)
+    
+ 
+Constraints
+-	listA, listB and listC will have between 1 and 50 elements each, inclusive.
+-	Each element of listA, listB and listC will contain between 1 and 20 characters, inclusive.
+-	Each element of listA, listB and listC will contain only lowercase letters ('a'-'z').
+-	All elements in listA will be distinct.
+-	All elements in listB will be distinct.
+-	All elements in listC will be distinct.
+ 
+Examples
+0)	
+    	
+
+{"cat", "dog", "pig", "mouse"}
+
+{"cat", "pig"}
+
+{"dog", "cat"}
+
+Returns: "8/3/3"
+
+1)	
+    	
+
+{"mouse"}
+
+{"cat", "pig"}
+
+{"dog", "cat"}
+
+Returns: "3/5/5"
+
+2)	
+    	
+
+{"dog", "mouse"}
+
+{"dog", "pig"}
+
+{"dog", "cat"}
+
+Returns: "4/4/4"
+
+3)	
+    	
+
+{"bcdbb","aaccd","dacbc","bcbda","cdedc","bbaaa","aecae"}
+
+{"bcdbb","ddacb","aaccd","adcab","edbee","aecae","bcbda"}
+
+{"dcaab","aadbe","bbaaa","ebeec","eaecb","bcbba","aecae","adcab","bcbda"}
+
+Returns: "14/14/21"

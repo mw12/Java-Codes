@@ -1,0 +1,93 @@
+SRM 357
+
+The job of a search engine is to provide relevant results to search queries. However, most real search queries match thousands, if not millions, of websites. Since some of them have to be shown, it is important for the search engine to figure out which websites are worth displaying. This is done with several heuristics, one of which considers the count of external websites linking to the website in question, as well as their importance.
+
+
+
+An easy way to do this is to assign all websites an initial vote of 1. If website A links to website B, website A adds all its votes to website B. As an example, consider websites A, B and C. They each have an initial vote of 1. However, after careful evaluation you discover that both A and B link to C. Therefore, A and B each have 1 vote, and C has 3 votes. Should a search query ever match all three websites, website C will be displayed first. The task is made more complex by websites often exchanging links. This means that if website A links to B, B may also link to A. To prevent artificial inflation of website importance, all votes from website A to website B must not count toward B's votes if website B directly or indirectly links to A.
+
+
+
+You are given a String[] votes and String website. Each element of votes consists of a website name, followed by a single space, followed by a single space separated list of all the websites that link to it. All website names contain only uppercase letters. Count and return the votes that website has, following the strategy outlined above.
+ 
+Definition
+    	
+Class:	WebsiteRank
+Method:	countVotes
+Parameters:	String[], String
+Returns:	long
+Method signature:	long countVotes(String[] votes, String website)
+(be sure your method is public)
+    
+ 
+Constraints
+-	votes will contain between 1 and 50 elements, inclusive.
+-	Each element of votes will contain between 1 and 50 characters, inclusive.
+-	Each element of votes will contain only uppercase letters ('A'-'Z') and spaces (' ').
+-	Each element of votes will contain no leading or trailing spaces, and no consecutive spaces.
+-	website will contain between 1 and 50 characters, inclusive.
+-	website will contain only uppercase letters ('A'-'Z').
+-	website will be contained in votes either as a linking website or a website that is linked to.
+-	A website will never directly link back to itself.
+-	All elements of votes will start with different website names.
+-	Each element of votes will have a distinct first website name. Within a single element of votes no website name will be repeated.
+ 
+Examples
+0)	
+    	
+
+{"C A B"}
+
+"C"
+
+Returns: 3
+
+The example from the problem statement.
+1)	
+    	
+
+{"A B C D", "B C D", "C D"}
+
+"A"
+
+Returns: 8
+
+B has 4 votes, C has 2 votes, and D has 1 vote. Initially A has 1 vote, which changes to 8 after the strategy is applied.
+2)	
+    	
+
+{"A"}
+
+"A"
+
+Returns: 1
+
+Unfortunately, no websites currently link to A.
+3)	
+    	
+
+{"A B", "B A"}
+
+"A"
+
+Returns: 1
+
+B's votes to A and A's votes to B are ignored, leaving just one vote for each.
+4)	
+    	
+
+{"A B C D E F", "B A", "C B", "D B"}
+
+"A"
+
+Returns: 3
+
+Not only does A directly link to B, but also indirectly to C and D. This leaves just 3 votes for A.
+5)	
+    	
+
+{"MYSITE OTHERSITE ANOTHERSITE THIRDSITE"}
+
+"MYSITE"
+
+Returns: 4

@@ -1,0 +1,56 @@
+Problem Statement
+    	When data is collected at regular intervals, trends in the data are sometimes easier to see by looking at a moving average. The moving average of length k at a particular time is the average of the k most recently collected data values. So at time t it is the average of the data reported at times t,t-1,...,t-(k-1). The moving average is not defined at time t unless we have data for the preceding k-1 times.
+
+We have a sequence of data values and want to look at the moving averages of length k of those values. Specifically, we want to know how much the largest moving average exceeds the smallest moving average.
+
+Create a class MovingAvg that contains a method difference that is given k and double[] data. It returns the difference between the largest and smallest moving average of length k in data.
+ 
+Definition
+    	
+Class:	MovingAvg
+Method:	difference
+Parameters:	int, double[]
+Returns:	double
+Method signature:	double difference(int k, double[] data)
+(be sure your method is public)
+    
+ 
+Notes
+-	The returned value must be accurate to within a relative or absolute value of 1E-9.
+ 
+Constraints
+-	k will be between 1 and 10, inclusive.
+-	data will contain between k and 50 elements, inclusive.
+-	Each element of data will be between 0.0 and 1000.0 inclusive.
+ 
+Examples
+0)	
+    	
+
+2
+
+{3,8,9,15}
+
+Returns: 6.5
+
+The moving averages are (3+8)/2, (8+9)/2, and (9+15)/2 which are 5.5, 8.5, and 12.0. So the difference between the largest and smallest is 12.0 - 5.5 = 6.5
+1)	
+    	
+
+3
+
+{17,6.2,19,3.4}
+
+Returns: 4.533333333333335
+
+The moving averages are (17+6.2+19)/3 and (6.2+19+3.4)/3 which are 14.0666666... and 9.533333...
+2)	
+    	
+
+3
+
+{6,2.5,3.5}
+
+Returns: 0.0
+
+There is only 1 moving average of length 3, so the smallest and biggest moving average are the same.
