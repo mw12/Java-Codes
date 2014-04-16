@@ -146,5 +146,10 @@
 	<classpathentry kind="lib" path="/usr/local/hadoop2/share/hadoop/hdfs/lib/protobuf-java-2.5.0.jar"/>
 	<classpathentry kind="lib" path="/usr/local/hadoop2/share/hadoop/hdfs/lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="/usr/local/hadoop2/share/hadoop/hdfs/lib/xmlenc-0.52.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mahout-buildtools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mahout-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mahout-examples"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mahout-integration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mahout-math"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

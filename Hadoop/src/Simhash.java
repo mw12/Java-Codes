@@ -9,37 +9,19 @@ import org.apache.hadoop.mapreduce.lib.jobcontrol.ControlledJob;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.apache.mahout.math.DenseMatrix;
+import org.apache.mahout.math.Matrix;
+import org.apache.mahout.math.SingularValueDecomposition;
+
+import conceptual.MatrixImplementor;
 
 public class Simhash implements Tool
 {
 	public int run(String[] args) throws Exception 
 	{
-		/*Job matrixmultiplication1 =  Job.getInstance(getConf(),"matrixmultiplication1");
-
-		matrixmultiplication1.setMapperClass(MatrixMultiplicationMap1.class);
-		matrixmultiplication1.setReducerClass(MatrixMultiplicationReduce1.class);
-		
-		matrixmultiplication1.setOutputKeyClass(IntWritable.class);
-		matrixmultiplication1.setOutputValueClass(Text.class);
-		
-		FileInputFormat.addInputPath(matrixmultiplication1, new Path(args[0]));
-	    FileOutputFormat.setOutputPath(matrixmultiplication1, new Path(args[1]));
-	    
-
-		Job matrixmultiplication2 =  Job.getInstance(getConf(),"matrixmultiplication2");
-
-		matrixmultiplication2.setMapperClass(MatrixMultiplicationMap2.class);
-		matrixmultiplication2.setReducerClass(MatrixMultiplicationReduce2.class);
-		
-		matrixmultiplication2.setOutputKeyClass(Text.class);
-		matrixmultiplication2.setOutputValueClass(IntWritable.class);
-		
-		FileInputFormat.addInputPath(matrixmultiplication2, new Path(args[2]));
-	    FileOutputFormat.setOutputPath(matrixmultiplication2, new Path(args[3]));*/
-	    
-		/*
+		/**
 		 * ******** shinglecount**********
-		 */
+		 **/
 //		Job shinglecount =  Job.getInstance(getConf(),"shinglecount");
 //
 //		shinglecount.setMapperClass(shinglemapper.class);
@@ -187,7 +169,7 @@ public class Simhash implements Tool
 	    control.addJob(controlledJob7);
 	    control.addJob(controlledJob8);*/
 	    
-	    Job tdm1 =  Job.getInstance(getConf(),"tdm1");
+	    /*Job tdm1 =  Job.getInstance(getConf(),"tdm1");
 
 		tdm1.setMapperClass(tdmMap1.class);
 		tdm1.setReducerClass(tdmReducer1.class);
@@ -227,12 +209,61 @@ public class Simhash implements Tool
 		tdm3.setOutputValueClass(Text.class);
 		
 		FileInputFormat.addInputPath(tdm3, new Path(args[1]));
-	    FileOutputFormat.setOutputPath(tdm3, new Path(args[3]));
+	    FileOutputFormat.setOutputPath(tdm3, new Path(args[2]));
 	    
 	    ControlledJob controlledJob11 =  new ControlledJob(tdm3, null);
 	    control.addJob(controlledJob11);
 	    
-	    controlledJob11.addDependingJob(controlledJob10);
+	    controlledJob11.addDependingJob(controlledJob10);*/
+	   
+    	Job matrixmultiplication1 =  Job.getInstance(getConf(),"matrixmultiplication1");
+
+		matrixmultiplication1.setMapperClass(MatrixMultiplicationMap1.class);
+		matrixmultiplication1.setReducerClass(MatrixMultiplicationReduce1.class);
+		
+		matrixmultiplication1.setOutputKeyClass(IntWritable.class);
+		matrixmultiplication1.setOutputValueClass(Text.class);
+		
+		FileInputFormat.addInputPath(matrixmultiplication1, new Path(args[0]));
+	    FileOutputFormat.setOutputPath(matrixmultiplication1, new Path(args[1]));
+	    
+
+		Job matrixmultiplication2 =  Job.getInstance(getConf(),"matrixmultiplication2");
+
+		matrixmultiplication2.setMapperClass(MatrixMultiplicationMap2.class);
+		matrixmultiplication2.setReducerClass(MatrixMultiplicationReduce2.class);
+		
+		matrixmultiplication2.setOutputKeyClass(Text.class);
+		matrixmultiplication2.setOutputValueClass(IntWritable.class);
+		
+		FileInputFormat.addInputPath(matrixmultiplication2, new Path(args[1]));
+	    FileOutputFormat.setOutputPath(matrixmultiplication2, new Path(args[2]));
+
+	    ControlledJob controlledJob11 =  new ControlledJob(matrixmultiplication1, null);
+	    ControlledJob controlledJob12 =  new ControlledJob(matrixmultiplication2, null);
+	    
+	    control.addJob(controlledJob11);
+	    control.addJob(controlledJob12);
+	    
+	    controlledJob12.addDependingJob(controlledJob11);
+	    
+	    MatrixImplementor mi = new MatrixImplementor();
+    	DenseMatrix tdm = mi.buildmatrix("/home/sahil/tdm3", matrixmultiplication1.getConfiguration());
+    	SingularValueDecomposition svd = mi.getsvd(tdm);
+    	
+    	Matrix U = svd.getU();
+    	Matrix S = svd.getS();
+    	Matrix V = svd.getV();
+    	
+    	Matrix Vtranspose = V.transpose();
+    	int columnsS = S.columnSize(); //dont know exactly which matrices to multiply
+    	int rowsS = S.rowSize();
+    	
+    	mi.writetofile(S, new Path("/home/sahil/svd1/matrix1"), matrixmultiplication1.getConfiguration());
+    	mi.writetofile(Vtranspose, new Path("/home/sahil/svd1/matrix2"), matrixmultiplication1.getConfiguration());
+    	
+    	
+    	
 	    
 	    Thread thread =  new Thread(control);
 	    thread.setDaemon(true);
@@ -247,14 +278,12 @@ public class Simhash implements Tool
 			}
 	    }
 	    
+	    
 	    return 0;
 	}
-	
-	public static void main(String[] args) throws Exception 
+	public static void main(String[] args) throws Exception
 	{
-		
-		
-		if(args.length !=4)
+		if(args.length !=3)
 		{
 			System.out.println("the arguments are too many or too less");
 			System.exit(1);
@@ -264,14 +293,11 @@ public class Simhash implements Tool
 			ToolRunner.run(new Simhash(), args);
 		}
 	}
-	
 	@Override
 	public Configuration getConf() 
 	{
 		return new Configuration();
-		//return null;
 	}
-	
 	@Override
 	public void setConf(Configuration arg0) 
 	{
