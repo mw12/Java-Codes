@@ -8,7 +8,9 @@ import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -23,6 +25,8 @@ import org.apache.mahout.math.Vector;
 
 
 public class MatrixImplementor {
+	
+	public Map<String, Integer> docmap = new HashMap<String, Integer>();
 	
 	public void writetofile(Matrix m, Path filepath, Configuration conf) throws IOException
 	{
@@ -146,16 +150,20 @@ public class MatrixImplementor {
 			FSDataInputStream fis = hdfs.open(partFile.getPath());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 			
-			String line = null, wordstring;
-			int openbracket, closebracket;
+			String line = null, wordstring, docname;
+			int openbracket, closebracket, startdollar;
 			List<String> wordlist;
-	    	int column = 0;
+	    	int column = 0, docid = 0;
 	    	
 			
 			while ((line = reader.readLine()) != null) 
 			{
 				openbracket = line.indexOf("[");
 				closebracket = line.indexOf("]");
+				startdollar = line.indexOf("$$$");
+				
+				docname = line.substring(0, startdollar).trim();
+				docmap.put(docname, docid++);
 				
 				wordstring = line.substring(openbracket+1, closebracket);
 				wordlist = Arrays.asList(wordstring.split(","));

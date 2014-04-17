@@ -151,5 +151,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/mahout-examples"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mahout-integration"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mahout-math"/>
+	<classpathentry kind="lib" path="/home/sahil/Downloads/json-io-2.2.31.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

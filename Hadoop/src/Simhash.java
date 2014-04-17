@@ -13,6 +13,8 @@ import org.apache.mahout.math.DenseMatrix;
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.SingularValueDecomposition;
 
+import com.cedarsoftware.util.io.JsonWriter;
+
 import conceptual.MatrixImplementor;
 
 public class Simhash implements Tool
@@ -247,6 +249,23 @@ public class Simhash implements Tool
 	    
 	    controlledJob12.addDependingJob(controlledJob11);
 	    
+	    
+	    Job conceptualfilter =  Job.getInstance(getConf(),"conceptualfilter");
+
+		conceptualfilter.setMapperClass(ConceptualFilterMap1.class);
+
+	    conceptualfilter.setReducerClass(ConceptualFilterReduce1.class);
+		
+		conceptualfilter.setOutputKeyClass(Text.class);
+		conceptualfilter.setOutputValueClass(IntWritable.class);
+		
+		FileInputFormat.addInputPath(conceptualfilter, new Path(args[1]));
+	    FileOutputFormat.setOutputPath(conceptualfilter, new Path(args[3]));
+
+	    ControlledJob controlledJob13 =  new ControlledJob(conceptualfilter, null);
+	    controlledJob13.addDependingJob(controlledJob12);
+	    control.addJob(controlledJob13);
+	    
 	    MatrixImplementor mi = new MatrixImplementor();
     	DenseMatrix tdm = mi.buildmatrix("/home/sahil/tdm3", matrixmultiplication1.getConfiguration());
     	SingularValueDecomposition svd = mi.getsvd(tdm);
@@ -262,8 +281,12 @@ public class Simhash implements Tool
     	mi.writetofile(S, new Path("/home/sahil/svd1/matrix1"), matrixmultiplication1.getConfiguration());
     	mi.writetofile(Vtranspose, new Path("/home/sahil/svd1/matrix2"), matrixmultiplication1.getConfiguration());
     	
+    	System.out.println("now writing this : "+ mi.docmap.toString());
     	
-    	
+		String json = JsonWriter.objectToJson(mi.docmap);
+		conceptualfilter.getConfiguration().set("map", json);
+		
+		
 	    
 	    Thread thread =  new Thread(control);
 	    thread.setDaemon(true);
@@ -283,7 +306,7 @@ public class Simhash implements Tool
 	}
 	public static void main(String[] args) throws Exception
 	{
-		if(args.length !=3)
+		if(args.length !=4)
 		{
 			System.out.println("the arguments are too many or too less");
 			System.exit(1);
