@@ -76,7 +76,8 @@ public class deduplicationreducer extends Reducer<IntWritable, Text, Text, Text>
 
 		if(rotationnumber.get() == 63)
 		{
-			context.write(new Text(uniquedocs.toString()), new Text(duplicatedocs.toString()));
+			for(String docname: uniquedocs)
+				context.write(new Text(docname), null); //CHANGED HERE NOT YET CHECKED!!!!!
 		}
 		
 	}

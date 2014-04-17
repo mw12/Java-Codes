@@ -24,154 +24,119 @@ public class Simhash implements Tool
 		/**
 		 * ******** shinglecount**********
 		 **/
-//		Job shinglecount =  Job.getInstance(getConf(),"shinglecount");
-//
-//		shinglecount.setMapperClass(shinglemapper.class);
-//		shinglecount.setReducerClass(shinglereducer.class);
-//		
-//		shinglecount.setOutputKeyClass(Text.class);
-//		shinglecount.setOutputValueClass(IntWritable.class);
-//		
-//		FileInputFormat.addInputPath(shinglecount, new Path(args[0]));
-//	    FileOutputFormat.setOutputPath(shinglecount, new Path(args[1]));
-//	    
-//	    /*
-//		 * ******** docshavingterm**********
-//		 * calculating no of documents that contain that term
-//		 */
-//	    
-//	    Job docshavingterm = Job.getInstance(getConf(), "docscontaingword");
-//	    
-//	    docshavingterm.setMapperClass(docshavingtermmapper.class);
-//	    docshavingterm.setReducerClass(docshavingtermreducer.class);
-//	    
-//	    docshavingterm.setMapOutputKeyClass(Text.class);
-//	    docshavingterm.setMapOutputValueClass(Text.class);
-//	    
-//	    docshavingterm.setOutputKeyClass(Text.class);
-//	    docshavingterm.setOutputValueClass(IntWritable.class);
-//	    
-//	    FileInputFormat.addInputPath(docshavingterm, new Path(args[1]));
-//	    FileOutputFormat.setOutputPath(docshavingterm, new Path(args[2]));
-//	    
-//	    /*
-//		 * ******** termstfidf**********
-//		 * tfidf computation of the term
-//		 */
-//	    
-//	    Job tfidf = Job.getInstance(getConf(), "tfidf computation");
-//	    
-//	    tfidf.setMapperClass(tfidfmapper.class);
-//	    tfidf.setReducerClass(tfidfreducer.class);
-//	    
-//	    tfidf.setMapOutputKeyClass(Text.class);
-//	    tfidf.setMapOutputValueClass(Text.class);
-//	    
-//	    tfidf.setOutputKeyClass(Text.class);
-//	    tfidf.setOutputValueClass(IntWritable.class);
-//	    
-//	    FileInputFormat.addInputPath(tfidf, new Path(args[2]));
-//	    FileOutputFormat.setOutputPath(tfidf, new Path(args[3]));
-//	    
-//	    /*
-//		 * ******** shingletfidf**********
-//		 * shingling and hashing them
-//		 */
-//	    
-//	    
-//	    Job shingletfidf = Job.getInstance(getConf(), "shingle tfidf");
-//	    
-//	    shingletfidf.setMapperClass(shingletfidfmapper.class);
-//	    shingletfidf.setReducerClass(shingletfidfreducer.class);
-//	    
-//	    shingletfidf.setOutputKeyClass(Text.class);
-//	    shingletfidf.setOutputValueClass(Text.class);
-//	    
-//	    FileInputFormat.addInputPath(shingletfidf, new Path(args[3]));
-//	    FileOutputFormat.setOutputPath(shingletfidf, new Path(args[4]));
-//
-//	    
-//	    /*
-//		 * ******** fingerprint**********
-//		 *
-//        */
-//	    
-//	    
-//	    Job fingerprint = Job.getInstance(getConf(), "docfingerprint");
-//	    
-//	    fingerprint.setMapperClass(fingerprintmapper.class);
-//	    fingerprint.setReducerClass(fingerprintreducer.class);
-//	    
-//	    fingerprint.setOutputKeyClass(Text.class);
-//	    fingerprint.setOutputValueClass(Text.class);
-//	    
-//	    FileInputFormat.addInputPath(fingerprint, new Path(args[4]));
-//	    FileOutputFormat.setOutputPath(fingerprint, new Path(args[5]));
-//	    
-//	    
-//	    /*
-//	     *	Rotation of bits
-//	     */
-//		
-//	    Job deduplication  = Job.getInstance(getConf(), "deduplication");
-//	    
-//	    deduplication.setMapperClass(deduplicationmapper.class);
-//	    deduplication.setReducerClass(deduplicationreducer.class);
-//	    
-//	    deduplication.setMapOutputKeyClass(IntWritable.class);
-//	    deduplication.setMapOutputValueClass(Text.class);
-//	    
-//	    deduplication.setOutputKeyClass(Text.class);
-//	    deduplication.setOutputValueClass(Text.class);
-//	    
-//	    FileInputFormat.addInputPath(deduplication, new Path(args[5]));
-//	    FileOutputFormat.setOutputPath(deduplication, new Path(args[6]));
-//	    
-//	    /*
-//		 * ******** Job control**********
-//		 * 
-//		 */
-//	    
-//	    ControlledJob controlledJob1 =  new ControlledJob(shinglecount, null);
-//	    ControlledJob controlledJob2 = new ControlledJob(docshavingterm,null);
-//	    controlledJob2.addDependingJob(controlledJob1);
-//	    
-//	    
-//	    ControlledJob controlledJob3 =  new ControlledJob(tfidf, null);
-//	    controlledJob3.addDependingJob(controlledJob2);
-//	    
-//	    
-//	    ControlledJob controlledJob4 =  new ControlledJob(shingletfidf, null);
-//	    controlledJob4.addDependingJob(controlledJob3);
-//	    
-//	    ControlledJob controlledJob5 =  new ControlledJob(fingerprint, null);
-//	    controlledJob5.addDependingJob(controlledJob4);
-//	    
-//	    
-//	    
-//	    
-//	    ControlledJob controlledJob6 =  new ControlledJob(deduplication, null);
-//	    controlledJob6.addDependingJob(controlledJob5);
-//	    
-	    JobControl control =  new JobControl("Simhash");
-//	    
-//	    control.addJob(controlledJob1);
-//	    control.addJob(controlledJob2);
-//	    control.addJob(controlledJob3);
-//	    control.addJob(controlledJob4);
-//	    control.addJob(controlledJob5);
-//	    control.addJob(controlledJob6);
-//	    
-//	    
-	    /*ControlledJob controlledJob7 =  new ControlledJob(matrixmultiplication1, null);
-	    ControlledJob controlledJob8 =  new ControlledJob(matrixmultiplication2, null);
+		Job shinglecount =  Job.getInstance(getConf(),"shinglecount");
+
+		shinglecount.setMapperClass(shinglemapper.class);
+		shinglecount.setReducerClass(shinglereducer.class);
+		
+		shinglecount.setOutputKeyClass(Text.class);
+		shinglecount.setOutputValueClass(IntWritable.class);
+		
+		FileInputFormat.addInputPath(shinglecount, new Path(args[0]));
+	    FileOutputFormat.setOutputPath(shinglecount, new Path(args[1]));
 	    
-	    controlledJob8.addDependingJob(controlledJob7);
+	    /*
+		 * ******** docshavingterm**********
+		 * calculating no of documents that contain that term
+		 */
 	    
-	    control.addJob(controlledJob7);
-	    control.addJob(controlledJob8);*/
+	    Job docshavingterm = Job.getInstance(getConf(), "docscontaingword");
 	    
-	    /*Job tdm1 =  Job.getInstance(getConf(),"tdm1");
+	    docshavingterm.setMapperClass(docshavingtermmapper.class);
+	    docshavingterm.setReducerClass(docshavingtermreducer.class);
+	    
+	    docshavingterm.setMapOutputKeyClass(Text.class);
+	    docshavingterm.setMapOutputValueClass(Text.class);
+	    
+	    docshavingterm.setOutputKeyClass(Text.class);
+	    docshavingterm.setOutputValueClass(IntWritable.class);
+	    
+	    FileInputFormat.addInputPath(docshavingterm, new Path(args[1]));
+	    FileOutputFormat.setOutputPath(docshavingterm, new Path(args[2]));
+	    
+	    /*
+		 * ******** termstfidf**********
+		 * tfidf computation of the term
+		 */
+	    
+	    Job tfidf = Job.getInstance(getConf(), "tfidf computation");
+	    
+	    tfidf.setMapperClass(tfidfmapper.class);
+	    tfidf.setReducerClass(tfidfreducer.class);
+	    
+	    tfidf.setMapOutputKeyClass(Text.class);
+	    tfidf.setMapOutputValueClass(Text.class);
+	    
+	    tfidf.setOutputKeyClass(Text.class);
+	    tfidf.setOutputValueClass(IntWritable.class);
+	    
+	    FileInputFormat.addInputPath(tfidf, new Path(args[2]));
+	    FileOutputFormat.setOutputPath(tfidf, new Path(args[3]));
+	    
+	    /*
+		 * ******** shingletfidf**********
+		 * shingling and hashing them
+		 */
+	    
+	    
+	    Job shingletfidf = Job.getInstance(getConf(), "shingle tfidf");
+	    
+	    shingletfidf.setMapperClass(shingletfidfmapper.class);
+	    shingletfidf.setReducerClass(shingletfidfreducer.class);
+	    
+	    shingletfidf.setOutputKeyClass(Text.class);
+	    shingletfidf.setOutputValueClass(Text.class);
+	    
+	    FileInputFormat.addInputPath(shingletfidf, new Path(args[3]));
+	    FileOutputFormat.setOutputPath(shingletfidf, new Path(args[4]));
+
+	    
+	    /*
+		 * ******** fingerprint**********
+		 *
+        */
+	    
+	    
+	    Job fingerprint = Job.getInstance(getConf(), "docfingerprint");
+	    
+	    fingerprint.setMapperClass(fingerprintmapper.class);
+	    fingerprint.setReducerClass(fingerprintreducer.class);
+	    
+	    fingerprint.setOutputKeyClass(Text.class);
+	    fingerprint.setOutputValueClass(Text.class);
+	    
+	    FileInputFormat.addInputPath(fingerprint, new Path(args[4]));
+	    FileOutputFormat.setOutputPath(fingerprint, new Path(args[5]));
+	    
+	    
+	    /*
+	     *	TEXTUALLY UNIQUE FOUND
+	     */
+		
+	    Job deduplication  = Job.getInstance(getConf(), "deduplication");
+	    
+	    deduplication.setMapperClass(deduplicationmapper.class);
+	    deduplication.setReducerClass(deduplicationreducer.class);
+	    
+	    deduplication.setMapOutputKeyClass(IntWritable.class);
+	    deduplication.setMapOutputValueClass(Text.class);
+	    
+	    deduplication.setOutputKeyClass(Text.class);
+	    deduplication.setOutputValueClass(Text.class);
+	    
+	    FileInputFormat.addInputPath(deduplication, new Path(args[5]));
+	    FileOutputFormat.setOutputPath(deduplication, new Path(args[6]));
+	    
+	    
+	    
+	    
+	    /*
+		 * ******** TEXTUAL ENDS**********
+		 * 
+		 */
+	    
+	    
+	    Job tdm1 =  Job.getInstance(getConf(),"tdm1");
 
 		tdm1.setMapperClass(tdmMap1.class);
 		tdm1.setReducerClass(tdmReducer1.class);
@@ -180,10 +145,9 @@ public class Simhash implements Tool
 		tdm1.setOutputValueClass(IntWritable.class);
 		
 		FileInputFormat.addInputPath(tdm1, new Path(args[0]));
-	    FileOutputFormat.setOutputPath(tdm1, new Path(args[1]));
+	    FileOutputFormat.setOutputPath(tdm1, new Path(args[7]));
 	    
-	    ControlledJob controlledJob9 =  new ControlledJob(tdm1, null);
-	    control.addJob(controlledJob9);
+
 	    
 	    Job tdm2 =  Job.getInstance(getConf(),"tdm2");
 
@@ -193,15 +157,10 @@ public class Simhash implements Tool
 		tdm2.setOutputKeyClass(Text.class);
 		tdm2.setOutputValueClass(IntWritable.class);
 		
-		FileInputFormat.addInputPath(tdm2, new Path(args[1]));
-	    FileOutputFormat.setOutputPath(tdm2, new Path(args[2]));
+		FileInputFormat.addInputPath(tdm2, new Path(args[7]));
+	    FileOutputFormat.setOutputPath(tdm2, new Path(args[8]));
 	    
-	    ControlledJob controlledJob10 =  new ControlledJob(tdm2, null);
-	    control.addJob(controlledJob10);
-	    
-	    controlledJob10.addDependingJob(controlledJob9);
-	    
-	    
+	   
 	    Job tdm3 =  Job.getInstance(getConf(),"tdm3");
 
 		tdm3.setMapperClass(tdmMapper3.class);
@@ -210,15 +169,14 @@ public class Simhash implements Tool
 		tdm3.setOutputKeyClass(Text.class);
 		tdm3.setOutputValueClass(Text.class);
 		
-		FileInputFormat.addInputPath(tdm3, new Path(args[1]));
-	    FileOutputFormat.setOutputPath(tdm3, new Path(args[2]));
+		FileInputFormat.addInputPath(tdm3, new Path(args[7]));
+	    FileOutputFormat.setOutputPath(tdm3, new Path(args[9]));
+
+	    /*WAITFORCOMPLETION()
+	     * DO MATRIX MULTIPLICATON HERE
+	     * */
 	    
-	    ControlledJob controlledJob11 =  new ControlledJob(tdm3, null);
-	    control.addJob(controlledJob11);
-	    
-	    controlledJob11.addDependingJob(controlledJob10);*/
-	   
-    	Job matrixmultiplication1 =  Job.getInstance(getConf(),"matrixmultiplication1");
+	    Job matrixmultiplication1 =  Job.getInstance(getConf(),"matrixmultiplication1");
 
 		matrixmultiplication1.setMapperClass(MatrixMultiplicationMap1.class);
 		matrixmultiplication1.setReducerClass(MatrixMultiplicationReduce1.class);
@@ -226,8 +184,8 @@ public class Simhash implements Tool
 		matrixmultiplication1.setOutputKeyClass(IntWritable.class);
 		matrixmultiplication1.setOutputValueClass(Text.class);
 		
-		FileInputFormat.addInputPath(matrixmultiplication1, new Path(args[0]));
-	    FileOutputFormat.setOutputPath(matrixmultiplication1, new Path(args[1]));
+		FileInputFormat.addInputPath(matrixmultiplication1, new Path(args[10]));
+	    FileOutputFormat.setOutputPath(matrixmultiplication1, new Path(args[11]));
 	    
 
 		Job matrixmultiplication2 =  Job.getInstance(getConf(),"matrixmultiplication2");
@@ -238,17 +196,8 @@ public class Simhash implements Tool
 		matrixmultiplication2.setOutputKeyClass(Text.class);
 		matrixmultiplication2.setOutputValueClass(IntWritable.class);
 		
-		FileInputFormat.addInputPath(matrixmultiplication2, new Path(args[1]));
-	    FileOutputFormat.setOutputPath(matrixmultiplication2, new Path(args[2]));
-
-	    ControlledJob controlledJob11 =  new ControlledJob(matrixmultiplication1, null);
-	    ControlledJob controlledJob12 =  new ControlledJob(matrixmultiplication2, null);
-	    
-	    control.addJob(controlledJob11);
-	    control.addJob(controlledJob12);
-	    
-	    controlledJob12.addDependingJob(controlledJob11);
-	    
+		FileInputFormat.addInputPath(matrixmultiplication2, new Path(args[11]));
+	    FileOutputFormat.setOutputPath(matrixmultiplication2, new Path(args[12]));
 	    
 	    Job conceptualfilter =  Job.getInstance(getConf(),"conceptualfilter");
 
@@ -257,35 +206,58 @@ public class Simhash implements Tool
 	    conceptualfilter.setReducerClass(ConceptualFilterReduce1.class);
 		
 		conceptualfilter.setOutputKeyClass(Text.class);
-		conceptualfilter.setOutputValueClass(IntWritable.class);
+		conceptualfilter.setOutputValueClass(Text.class);
 		
-		FileInputFormat.addInputPath(conceptualfilter, new Path(args[1]));
-	    FileOutputFormat.setOutputPath(conceptualfilter, new Path(args[3]));
+		FileInputFormat.addInputPath(conceptualfilter, new Path(args[12]));
+	    FileOutputFormat.setOutputPath(conceptualfilter, new Path(args[13]));
 
-	    ControlledJob controlledJob13 =  new ControlledJob(conceptualfilter, null);
-	    controlledJob13.addDependingJob(controlledJob12);
-	    control.addJob(controlledJob13);
 	    
-	    MatrixImplementor mi = new MatrixImplementor();
-    	DenseMatrix tdm = mi.buildmatrix("/home/sahil/tdm3", matrixmultiplication1.getConfiguration());
-    	SingularValueDecomposition svd = mi.getsvd(tdm);
-    	
-    	Matrix U = svd.getU();
-    	Matrix S = svd.getS();
-    	Matrix V = svd.getV();
-    	
-    	Matrix Vtranspose = V.transpose();
-    	int columnsS = S.columnSize(); //dont know exactly which matrices to multiply
-    	int rowsS = S.rowSize();
-    	
-    	mi.writetofile(S, new Path("/home/sahil/svd1/matrix1"), matrixmultiplication1.getConfiguration());
-    	mi.writetofile(Vtranspose, new Path("/home/sahil/svd1/matrix2"), matrixmultiplication1.getConfiguration());
-    	
-    	System.out.println("now writing this : "+ mi.docmap.toString());
-    	
-		String json = JsonWriter.objectToJson(mi.docmap);
-		conceptualfilter.getConfiguration().set("map", json);
-		
+	    ControlledJob controlledJob1 =  new ControlledJob(shinglecount, null);
+	    ControlledJob controlledJob2 = new ControlledJob(docshavingterm,null);
+	    ControlledJob controlledJob3 =  new ControlledJob(tfidf, null);
+	    ControlledJob controlledJob4 =  new ControlledJob(shingletfidf, null);
+	    ControlledJob controlledJob5 =  new ControlledJob(fingerprint, null);
+	    ControlledJob controlledJob6 =  new ControlledJob(deduplication, null);
+	    ControlledJob controlledJob7 =  new ControlledJob(tdm1, null);
+	    ControlledJob controlledJob8 =  new ControlledJob(tdm2, null);
+	    ControlledJob controlledJob9 =  new ControlledJob(tdm3, null);
+	    ControlledJob controlledJob10 =  new ControlledJob(matrixmultiplication1, null);
+	    ControlledJob controlledJob11 =  new ControlledJob(matrixmultiplication2, null);
+	    ControlledJob controlledJob12 =  new ControlledJob(conceptualfilter, null);
+	    /*ControlledJob controlledJob10 =  new ControlledJob(tdm2, null);
+	    ControlledJob controlledJob11 =  new ControlledJob(tdm3, null);*/
+	    
+	    
+	    
+	    controlledJob2.addDependingJob(controlledJob1);
+	    controlledJob3.addDependingJob(controlledJob2);
+	    controlledJob4.addDependingJob(controlledJob3);
+	    controlledJob5.addDependingJob(controlledJob4);
+	    controlledJob6.addDependingJob(controlledJob5);
+	    controlledJob8.addDependingJob(controlledJob7);
+	    controlledJob9.addDependingJob(controlledJob8);
+
+
+//	    controlledJob13.addDependingJob(controlledJob12);
+//	    controlledJob14.addDependingJob(controlledJob13);
+	    
+	    JobControl control =  new JobControl("Simhash");
+	    
+	    control.addJob(controlledJob1);
+	    control.addJob(controlledJob2);
+	    control.addJob(controlledJob3);
+	    control.addJob(controlledJob4);
+	    control.addJob(controlledJob5);
+	    control.addJob(controlledJob6);
+	    control.addJob(controlledJob7);
+	    control.addJob(controlledJob8);
+	    control.addJob(controlledJob9);
+	    
+
+//	    control.addJob(controlledJob13);
+//	    control.addJob(controlledJob14);
+	    
+	    
 		
 	    
 	    Thread thread =  new Thread(control);
@@ -294,19 +266,66 @@ public class Simhash implements Tool
 	    
 	    while(true)
 	    {
+	    	
 	    	if (control.allFinished())
 		    {
+	    		System.out.println("\n\n\n\n\nExecuting static code...\n\n\n\n");
+	    	    MatrixImplementor mi = new MatrixImplementor();
+	        	DenseMatrix tdm = mi.buildmatrix("/home/sahil/tdm3", matrixmultiplication1.getConfiguration());
+	        	SingularValueDecomposition svd = mi.getsvd(tdm);
+	        	
+	        	Matrix U = svd.getU();
+	        	Matrix S = svd.getS();
+	        	Matrix V = svd.getV();
+	        	
+	        	Matrix Vtranspose = V.transpose();
+	        	int columnsS = S.columnSize(); //dont know exactly which matrices to multiply
+	        	int rowsS = S.rowSize();
+	        	
+	        	mi.writetofile(S, new Path("/home/sahil/svd1/matrix1"), matrixmultiplication1.getConfiguration());
+	        	mi.writetofile(Vtranspose, new Path("/home/sahil/svd1/matrix2"), matrixmultiplication1.getConfiguration());
+	        	
+	    		control.addJob(controlledJob10);
+	    	    control.addJob(controlledJob11);
+	    	    
+	    	    
+	    	    controlledJob10.addDependingJob(controlledJob9);
+	    	    controlledJob11.addDependingJob(controlledJob10);
+	    	    
+	    	    while(true)
+	    	    {
+	    	    	if(control.allFinished())
+	    	    		{
+	    	        	System.out.println("now writing this : "+ mi.docmap.toString());
+	    	        	
+	    	    		String json = JsonWriter.objectToJson(mi.docmap);
+	    	    		conceptualfilter.getConfiguration().set("map", json);
+	    	    		control.addJob(controlledJob12);
+	    	    		controlledJob12.addDependingJob(controlledJob11);
+	    	    		while(true)
+	    	    		{
+	    	    			if(control.allFinished())
+	    	    				break;
+	    	    		}
+	    	    		
+	    	    		break;
+	    	    		}
+	    	    }
 	    		control.stop();
 	    		break;
 			}
 	    }
+
+
+//		
 	    
 	    
 	    return 0;
 	}
+	
 	public static void main(String[] args) throws Exception
 	{
-		if(args.length !=4)
+		if(args.length !=14)
 		{
 			System.out.println("the arguments are too many or too less");
 			System.exit(1);
@@ -316,6 +335,7 @@ public class Simhash implements Tool
 			ToolRunner.run(new Simhash(), args);
 		}
 	}
+	
 	@Override
 	public Configuration getConf() 
 	{

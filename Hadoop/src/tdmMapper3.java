@@ -13,7 +13,7 @@ public class tdmMapper3 extends Mapper<LongWritable, Text, Text, Text>
     	String docid = line.toString().substring(0, startdollar).trim();
     	String value = line.toString().substring(startdollar+3).trim();
     	
-    	System.out.println(docid + " "+ value);
+    	//System.out.println(docid + " "+ value);
     	context.write(new Text(docid), new Text(value));
     }
 }

@@ -10,7 +10,7 @@ public class tdmReducer2 extends Reducer<Text,IntWritable, Text,IntWritable>
 	
 	public void reduce(Text key, Iterable<IntWritable> counts, Context context) throws IOException, InterruptedException
 	{
-		context.write(new Text(key + " ### "), new IntWritable(index));
+		context.write(new Text(key + " $$$ "), new IntWritable(index));
 		index++;
 	}
 	

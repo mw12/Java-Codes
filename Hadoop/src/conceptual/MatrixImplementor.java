@@ -26,7 +26,7 @@ import org.apache.mahout.math.Vector;
 
 public class MatrixImplementor {
 	
-	public Map<String, Integer> docmap = new HashMap<String, Integer>();
+	public Map<Integer, String> docmap = new HashMap<Integer, String>();
 	
 	public void writetofile(Matrix m, Path filepath, Configuration conf) throws IOException
 	{
@@ -163,7 +163,7 @@ public class MatrixImplementor {
 				startdollar = line.indexOf("$$$");
 				
 				docname = line.substring(0, startdollar).trim();
-				docmap.put(docname, docid++);
+				docmap.put(docid++, docname);
 				
 				wordstring = line.substring(openbracket+1, closebracket);
 				wordlist = Arrays.asList(wordstring.split(","));

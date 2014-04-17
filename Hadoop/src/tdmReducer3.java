@@ -39,7 +39,7 @@ public class tdmReducer3 extends Reducer<Text,Text, Text,Text>
 			String term;
 			while ((line = reader.readLine()) != null) 
 			{
-				startdollar = line.indexOf("###");
+				startdollar = line.indexOf("$$$");
 				term = line.substring(0, startdollar).trim();
 				index = Integer.parseInt(line.substring(startdollar+3).trim());
 				
