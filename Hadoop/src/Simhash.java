@@ -199,19 +199,46 @@ public class Simhash implements Tool
 		FileInputFormat.addInputPath(matrixmultiplication2, new Path(args[11]));
 	    FileOutputFormat.setOutputPath(matrixmultiplication2, new Path(args[12]));
 	    
-	    Job conceptualfilter =  Job.getInstance(getConf(),"conceptualfilter");
+	    Job conceptualfilter1 =  Job.getInstance(getConf(),"conceptualfilter1");
 
-		conceptualfilter.setMapperClass(ConceptualFilterMap1.class);
+		conceptualfilter1.setMapperClass(ConceptualFilterMap1.class);
 
-	    conceptualfilter.setReducerClass(ConceptualFilterReduce1.class);
+	    conceptualfilter1.setReducerClass(ConceptualFilterReduce1.class);
 		
-		conceptualfilter.setOutputKeyClass(Text.class);
-		conceptualfilter.setOutputValueClass(Text.class);
+		conceptualfilter1.setOutputKeyClass(Text.class);
+		conceptualfilter1.setOutputValueClass(Text.class);
 		
-		FileInputFormat.addInputPath(conceptualfilter, new Path(args[12]));
-	    FileOutputFormat.setOutputPath(conceptualfilter, new Path(args[13]));
+		FileInputFormat.addInputPath(conceptualfilter1, new Path(args[12]));
+	    FileOutputFormat.setOutputPath(conceptualfilter1, new Path(args[13]));
 
+
+	    Job conceptualfilter2 =  Job.getInstance(getConf(),"conceptualfilter2");
+
+		conceptualfilter2.setMapperClass(ConceptualFilterMap2.class);
+
+	    conceptualfilter2.setReducerClass(ConceptualFilterReduce2.class);
 	    
+	    conceptualfilter2.setMapOutputKeyClass(IntWritable.class);
+	    conceptualfilter2.setMapOutputValueClass(Text.class);
+		
+		conceptualfilter2.setOutputKeyClass(Text.class);
+		conceptualfilter2.setOutputValueClass(Text.class);
+		
+		FileInputFormat.addInputPath(conceptualfilter2, new Path(args[13]));
+	    FileOutputFormat.setOutputPath(conceptualfilter2, new Path(args[14]));
+
+	    Job conceptualfilter3 =  Job.getInstance(getConf(),"conceptualfilter3");
+
+		conceptualfilter3.setMapperClass(ConceptualFilterMap3.class);
+
+	    conceptualfilter3.setReducerClass(ConceptualFilterReduce3.class);
+	    
+		conceptualfilter3.setOutputKeyClass(Text.class);
+		conceptualfilter3.setOutputValueClass(Text.class);
+		
+		FileInputFormat.addInputPath(conceptualfilter3, new Path(args[14]));
+	    FileOutputFormat.setOutputPath(conceptualfilter3, new Path(args[15]));
+
 	    ControlledJob controlledJob1 =  new ControlledJob(shinglecount, null);
 	    ControlledJob controlledJob2 = new ControlledJob(docshavingterm,null);
 	    ControlledJob controlledJob3 =  new ControlledJob(tfidf, null);
@@ -223,23 +250,10 @@ public class Simhash implements Tool
 	    ControlledJob controlledJob9 =  new ControlledJob(tdm3, null);
 	    ControlledJob controlledJob10 =  new ControlledJob(matrixmultiplication1, null);
 	    ControlledJob controlledJob11 =  new ControlledJob(matrixmultiplication2, null);
-	    ControlledJob controlledJob12 =  new ControlledJob(conceptualfilter, null);
-	    /*ControlledJob controlledJob10 =  new ControlledJob(tdm2, null);
-	    ControlledJob controlledJob11 =  new ControlledJob(tdm3, null);*/
+	    ControlledJob controlledJob12 =  new ControlledJob(conceptualfilter1, null);
+	    ControlledJob controlledJob13 =  new ControlledJob(conceptualfilter2, null);
+	    ControlledJob controlledJob14 =  new ControlledJob(conceptualfilter3, null);
 	    
-	    
-	    
-	    controlledJob2.addDependingJob(controlledJob1);
-	    controlledJob3.addDependingJob(controlledJob2);
-	    controlledJob4.addDependingJob(controlledJob3);
-	    controlledJob5.addDependingJob(controlledJob4);
-	    controlledJob6.addDependingJob(controlledJob5);
-	    controlledJob8.addDependingJob(controlledJob7);
-	    controlledJob9.addDependingJob(controlledJob8);
-
-
-//	    controlledJob13.addDependingJob(controlledJob12);
-//	    controlledJob14.addDependingJob(controlledJob13);
 	    
 	    JobControl control =  new JobControl("Simhash");
 	    
@@ -253,11 +267,13 @@ public class Simhash implements Tool
 	    control.addJob(controlledJob8);
 	    control.addJob(controlledJob9);
 	    
-
-//	    control.addJob(controlledJob13);
-//	    control.addJob(controlledJob14);
-	    
-	    
+	    controlledJob2.addDependingJob(controlledJob1);
+	    controlledJob3.addDependingJob(controlledJob2);
+	    controlledJob4.addDependingJob(controlledJob3);
+	    controlledJob5.addDependingJob(controlledJob4);
+	    controlledJob6.addDependingJob(controlledJob5);
+	    controlledJob8.addDependingJob(controlledJob7);
+	    controlledJob9.addDependingJob(controlledJob8);
 		
 	    
 	    Thread thread =  new Thread(control);
@@ -299,9 +315,15 @@ public class Simhash implements Tool
 	    	        	System.out.println("now writing this : "+ mi.docmap.toString());
 	    	        	
 	    	    		String json = JsonWriter.objectToJson(mi.docmap);
-	    	    		conceptualfilter.getConfiguration().set("map", json);
+	    	    		conceptualfilter1.getConfiguration().set("map", json);
 	    	    		control.addJob(controlledJob12);
+	    	    		control.addJob(controlledJob13);
+	    	    		control.addJob(controlledJob14);
+	    	    		
 	    	    		controlledJob12.addDependingJob(controlledJob11);
+	    	    		controlledJob13.addDependingJob(controlledJob12);
+	    	    		controlledJob14.addDependingJob(controlledJob13);
+	    	    		
 	    	    		while(true)
 	    	    		{
 	    	    			if(control.allFinished())
@@ -325,7 +347,7 @@ public class Simhash implements Tool
 	
 	public static void main(String[] args) throws Exception
 	{
-		if(args.length !=14)
+		if(args.length !=16)
 		{
 			System.out.println("the arguments are too many or too less");
 			System.exit(1);

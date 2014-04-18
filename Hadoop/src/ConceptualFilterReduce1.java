@@ -12,7 +12,7 @@ public class ConceptualFilterReduce1 extends Reducer<Text, Text, Text, Text>
 		
 		String fingerprint = "", recordstring;
 		int startdollar, row, value;
-		boolean firsttime = false;
+		boolean firsttime = true;
 		TreeMap<Integer, Integer> fingermap = new TreeMap<Integer, Integer>();
 		
 		for(Text record: records)
