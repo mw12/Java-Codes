@@ -8,8 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public class server {
-
+public class server 
+{
+    ServerSocket serverSocket =  null;
+    Socket socket = null;
     public int compute(String recieved)
     {
         StringTokenizer st = new StringTokenizer(recieved,"," );
@@ -27,9 +29,6 @@ public class server {
         }
         return sum;
     }
-   
-    ServerSocket serverSocket =  null;
-    Socket socket = null;
     public server(int port) throws IOException
     {
         this.serverSocket = new ServerSocket(port);
@@ -42,7 +41,7 @@ public class server {
     }
     public static void main(String[] args) throws IOException
     {
-        server server1 = new server(6768);
+        server server1 = new server(6767);
         try
         {
         	while(true)

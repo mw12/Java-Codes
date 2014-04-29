@@ -2,27 +2,25 @@ import java.util.ArrayList;
 
 public class Threading  extends Thread
 {
-	//public static Semaphore a;
+	String data;
 	int threadid;
 	int rownumber, colnumber, index;
+	
 	public static ArrayList<ListServers> servers = null;
-	String data;
 	public static int resultantmatrix[][];
 	
-	public Threading(int rowno, int colno, String string, int index, int resultantmatrix[][],int threadid) 
+	public Threading(int rowno, int colno, String string, int index,int threadid) 
 	{
 		data = string;
 		rownumber = rowno;
 		colnumber = colno;
 		this.index = index;
-		Threading.resultantmatrix = resultantmatrix;
 		this.threadid = threadid;
-		//System.out.println("data is  " + data);
 	}
 	private Client getNextBestServer()
 	{
 		Client curclient = servers.get(index).client;
-		while(servers.get(index).isUpandRunning==false)
+		while(servers.get(index).isUpandRunning == false)//search for next sever that is upandRunning
 		{
 			index = (index+1) % servers.size();
 			curclient = servers.get(index).client;
@@ -32,42 +30,39 @@ public class Threading  extends Thread
 	public void run() 
 	{
 		boolean done = false;
-		
 		while(!done)
 		{
 			Client currentserver = getNextBestServer();
-			System.out.println("in thread " + this.threadid + " permits are "+ servers.get(index).sema.availablePermits());
-			try 
+			//System.out.println("in thread " + this.threadid + " permits are "+ servers.get(index).sema.availablePermits());
+			try
 			{
-				servers.get(index).sema.acquire();
+				if(servers.get(index).sema.tryAcquire())
+				{
+					System.out.println("lock acquired by thread " + this.threadid);
+				}
+				else
+				{
+					System.out.println("not acquired by "+ this.threadid);
+					servers.get(index).sema.acquire();
+				}
+				
 			} 
 			catch (InterruptedException e) 
 			{
 				System.out.println("was trying to acquire lock");
 				e.printStackTrace();
 			}
-//			while(!servers.get(index).free)
-//			{
-//				try 
-//				{
-//					this.sleep(10);
-//				} 
-//				catch (InterruptedException e) 
-//				{
-//					e.printStackTrace();
-//				}
-//			}
-//			servers.get(index).free = false;
 			
-			currentserver.senddata(data);
-			String read = null;
-			read = currentserver.read();
+				currentserver.senddata(data);
+				String read = null;
+				read = currentserver.read();
 			servers.get(index).sema.release();
 			//System.out.println("read is "+ read);
 			
 			int status = currentserver.checkreceivedstring(read);
 			if(status == 0)//down
 			{
+				System.out.println("node down for thread "+ this.threadid);
 				servers.get(index).isUpandRunning = false;
 				//System.out.println("node down");
 				
@@ -84,5 +79,4 @@ public class Threading  extends Thread
 		
 		
 	}
-
 }
