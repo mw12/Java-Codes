@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 
 public class server 
 {
+	public static int count = 0;
     ServerSocket serverSocket =  null;
     Socket socket = null;
     public int compute(String recieved)
@@ -41,7 +42,7 @@ public class server
     }
     public static void main(String[] args) throws IOException
     {
-        server server1 = new server(6767);
+        server server1 = new server(6768);
         try
         {
         	while(true)
@@ -62,35 +63,41 @@ public class server
                 //
                 while((recieved = input.readLine())!=null)
                 {
-                	System.out.println("received is " + recieved);
+//                	System.out.println("received is " + recieved);
                 	if(recieved.equals("done"))
                 	{
-                		System.out.println("terminatig server as ");
+                		System.out.println("terminatig server");
                 		return ;
                 	}
-                		
-                    System.out.println("here after receivin from client");
+                
+//                    System.out.println("here after receivin from client");
                     StringBuffer send = new StringBuffer();
                     send.append(server1.compute(recieved));
                                       
-                   System.out.println(send);
+//                   System.out.println(send);
                     try
                     {
                         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(server1.socket.getOutputStream()));
                         out.write(send+"\n");
                         out.flush();
+                    	count++;
                     }
                     catch(Exception e)
                     {
                     	System.out.println("exception in sending data from server");
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                 }
         	}
             
         }
+        catch(Exception e)
+        {
+        	System.out.println("here");
+        }
         finally
         {
+        	System.out.println("count is "+ count);
             server1.cleanup();
         }
     }

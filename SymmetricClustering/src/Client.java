@@ -3,11 +3,14 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 public class Client 
 {
@@ -29,7 +32,7 @@ public class Client
 		else
 			return false;
 	}
-	public static void terminateservers(ArrayList<ListServers> servers)
+	public static void terminateservers(ArrayList<ListServers> servers) throws IOException
 	{
 		for (ListServers server : servers) 
 		{
@@ -80,22 +83,29 @@ public class Client
 			}
 			else
 			{
+				System.out.println("host unreachabel");
 				throw new Exception();
 			}
+		}
+		catch(ConnectException e)
+		{
+			System.out.println("connection is being refused");
+			return false;
 		}
 		catch (Exception e) 
 		{
 			System.out.println("cannot create socket");
+			e.printStackTrace();
 			if(!servers.contains(this))
 				servers.add(new ListServers(this, false));
 			return false;
 		} 
 	}
-	public int senddata(String data)
+	public int senddata(String data) throws IOException
 	{
 		try 
 		{
-			//System.out.println("sending " + data + "to server");
+//			System.out.println("sending " + data + "to server");
 //			PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
 //			out.println(data);
 			this.outstream.writeBytes(data);
@@ -105,6 +115,7 @@ public class Client
 		catch (Exception e) 
 		{
 			System.out.println("not able to send data to server");
+			this.socket.close();
 			//e.printStackTrace();
 			return 0;
 		}
@@ -116,13 +127,23 @@ public class Client
 		String st = null;
 		try 
 		{
+			socket.setSoTimeout(5000);
+//			System.out.println("next is instream read");
 			st = instream.readLine();
+//			System.out.println("instream read success");
 			temp.append(st);
+//			System.out.println("append done");
 			return temp.toString();
 		} 
+		catch(SocketTimeoutException sockex)
+		{
+			System.out.println("socket timeout");
+			return new String("null");
+		}
 		catch (IOException e) 
 		{
-			System.out.println("not able to read from server");
+		
+//			System.out.println("not able to read from server");
 			e.printStackTrace();
 			return null;
 		}
@@ -185,7 +206,7 @@ public class Client
 		long starttime = System.nanoTime();
 		ArrayList<ListServers> servers = new ArrayList<ListServers>();
 				
-		Scanner in = new Scanner(new File("/home/smittal/workspace/SymmetricClustering/input/in"));
+		Scanner in = new Scanner(new File("/home/user/workspace2/SymmetricClustering/input/in"));
 
 		int row1 = in.nextInt();
 		int col1 = in.nextInt();
@@ -193,11 +214,11 @@ public class Client
 		int col2 = in.nextInt();
 		
 		int matrix1[][] = new int[row1][col1];
-		in = new Scanner(new File("/home/smittal/workspace/SymmetricClustering/input/matbig"));
+		in = new Scanner(new File("/home/user/workspace2/SymmetricClustering/input/matbig"));
 		readmatrix(matrix1, row1, col1,in);
 		
 		int matrix2[][] = new int[row2][col2];
-		in = new Scanner(new File("/home/smittal/workspace/SymmetricClustering/input/matbig1"));
+		in = new Scanner(new File("/home/user/workspace2/SymmetricClustering/input/matbig1"));
 		readmatrix(matrix2, row2, col2,in);
 		
 		int transpose[][] = new int[col2][row2];
@@ -209,11 +230,11 @@ public class Client
       			transpose[d][c] = matrix2[c][d];
       	}
       	Client first = new Client();
-		first.initializeClient("10.4.3.91", 6768,servers);
+		first.initializeClient("10.1.6.55", 6767,servers);
 		Client second = new Client();
-		second.initializeClient("10.4.3.81", 6767,servers);
-//		Client third = new Client();
-//		third.initializeClient("10.1.6.37", 6769,servers);
+		second.initializeClient("10.1.6.56", 6768,servers);
+		Client third = new Client();
+		third.initializeClient("10.1.6.57", 6769,servers);
 
 		
 		if(!upservers(servers))
@@ -274,7 +295,7 @@ public class Client
         
         first.cleanup();
         second.cleanup();
-//        third.cleanup();
+        third.cleanup();
         in.close();
         long endtime = System.nanoTime();
         System.out.println("total execution time is " + (endtime	 - starttime)/1000000 );

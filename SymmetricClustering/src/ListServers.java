@@ -9,6 +9,6 @@ public class ListServers
 	{
 		client = c;
 		isUpandRunning = status;
-		this.sema = new Semaphore(1,true);
+		this.sema = new Semaphore(1,false);
 	}
 }
